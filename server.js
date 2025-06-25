@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// ✅ Meta GET Webhook Verification
+// ✅ 1. Meta Webhook Verification (GET)
 app.get('/whatsapp-inbound', (req, res) => {
   const mode = req.query['hub.mode'];
   const token = req.query['hub.verify_token'];
@@ -15,30 +15,31 @@ app.get('/whatsapp-inbound', (req, res) => {
     console.log('✅ Meta Webhook Verified!');
     res.status(200).send(challenge);
   } else {
-    console.log('❌ Verification failed:', req.query);
+    console.log('❌ Meta Verification Failed:', req.query);
     res.sendStatus(403);
   }
 });
 
-// ✅ POST: Forward WhatsApp Webhook to n8n
+// ✅ 2. Incoming WhatsApp Messages (POST → Forward to n8n PRODUCTION URL)
 app.post('/whatsapp-inbound', async (req, res) => {
   try {
     console.log('✅ Incoming WhatsApp POST:', JSON.stringify(req.body));
 
-    // Replace this with your n8n webhook URL
+    // ✅ Your PRODUCTION n8n Webhook URL (LIVE WORKFLOW ONLY)
     const n8nWebhookUrl = 'https://kaapav-bot.onrender.com/webhook/whatsapp-inbound';
 
     await axios.post(n8nWebhookUrl, req.body, {
       headers: { 'Content-Type': 'application/json' }
     });
 
+    console.log('✅ Successfully forwarded to n8n');
     res.status(200).send('✅ POST forwarded to n8n');
-  } catch (err) {
-    console.error('❌ Forwarding failed:', err.message);
+  } catch (error) {
+    console.error('❌ Error forwarding to n8n:', error.message);
     res.status(500).send('❌ Error forwarding to n8n');
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Kaapav Webhook Server running on ${PORT}`);
+  console.log(`✅ Kaapav Webhook Server running on port ${PORT}`);
 });
