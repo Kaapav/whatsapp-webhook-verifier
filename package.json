@@ -1,12 +1,13 @@
 {
   "name": "kaapav-webhook-verifier",
   "version": "1.0.0",
-  "description": "Meta Webhook GET Verifier for Kaapav",
+  "description": "Meta WhatsApp Webhook GET + POST Forwarder for Kaapav",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "axios": "^1.6.0"
   }
 }
