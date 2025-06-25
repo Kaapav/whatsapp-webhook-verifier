@@ -1,27 +1,21 @@
 const express = require('express');
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.get('/verify-hook', (req, res) => {
+app.get('/whatsapp-inbound', (req, res) => {
   const mode = req.query['hub.mode'];
   const token = req.query['hub.verify_token'];
   const challenge = req.query['hub.challenge'];
 
-  console.log('Received Meta Verification Request:', req.query);
-
-  if (mode === 'subscribe' && token === 'kaapav_verify_2024') {
-    console.log('✅ Verification Passed!');
+  if (mode && token === 'kaapav_verify_2024') {
+    console.log('✅ Webhook Verified by Meta!');
     res.status(200).send(challenge);
   } else {
-    console.log('❌ Verification Failed');
-    res.status(403).send('Verification failed');
+    console.log('❌ Verification Failed!');
+    res.sendStatus(403);
   }
 });
 
-app.get('/', (req, res) => {
-  res.send('Kaapav Webhook Verifier Running ✅');
-});
-
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`✅ Kaapav Webhook Verifier Running on port ${PORT}`);
 });
