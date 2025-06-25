@@ -1,7 +1,7 @@
 {
   "name": "kaapav-webhook-verifier",
   "version": "1.0.0",
-  "description": "Meta WhatsApp Webhook GET + POST Forwarder for Kaapav",
+  "description": "Meta WhatsApp Webhook Verifier and POST Forwarder for Kaapav",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
